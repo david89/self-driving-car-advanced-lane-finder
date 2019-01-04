@@ -72,7 +72,7 @@ I used a combination of color transforms and the Sobel method in order to create
 ![Sobel direction image](sobel_direction.png 'Sobel direction image')
 
 **Sobel magnitude and direction**
-![Sobel magnitude and direction image](sobel_magnitude_and_direction.png 'Sobel magnitude and direction image')
+![Sobel magnitude and direction image](sobel_magnitude_direction.png 'Sobel magnitude and direction image')
 
 **All Sobel masks**
 ![All Sobel masks](all_sobel.png 'All Sobel masks')
