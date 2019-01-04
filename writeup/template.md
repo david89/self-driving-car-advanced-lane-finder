@@ -134,6 +134,7 @@ Before getting into the details of the perspective transform, let's discuss the 
 ### Region of interest.
 
 The region of interest corresponds the area in the image we are going to apply the perspective transformation on. In our case, we are using a trapezoid as showed in the following picture:
+
 ![Region of interest](region_of_interest.png 'Region of interest')
 
 ### Bird's eye view
