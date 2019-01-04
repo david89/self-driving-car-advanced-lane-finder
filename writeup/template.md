@@ -50,13 +50,32 @@ After aggregating all corners and object points, and feeding them to the calibra
 #### 1. Provide an example of a distortion-corrected image.
 
 To demonstrate this step, I will describe how I apply the distortion correction to one of the test images like this one:
-![alt text][image2]
+![Undistorted image](undistorted_image.png 'Undistorted image')
 
 #### 2. Describe how (and identify where in your code) you used color transforms, gradients or other methods to create a thresholded binary image.  Provide an example of a binary image result.
 
-I used a combination of color and gradient thresholds to generate a binary image (thresholding steps at lines # through # in `another_file.py`).  Here's an example of my output for this step.  (note: this is not actually from one of the test images)
+I used a combination of color transforms and the Sobel method in order to create a thresholded binary image. Let's go through the output of each Sobel transformation.
 
-![alt text][image3]
+**Sobel X**
+![Sobel X image](sobel_x_image.png 'Sobel X image')
+
+**Sobel Y**
+![Sobel Y image](sobel_y_image.png 'Sobel Y image')
+
+**Sobel XY**
+![Sobel XY image](sobel_xy_image.png 'Sobel XY image')
+
+**Sobel magnitude**
+![Sobel magnitude image](sobel_magnitude.png 'Sobel magnitude image')
+
+**Sobel direction**
+![Sobel direction image](sobel_direction.png 'Sobel direction image')
+
+**Sobel magnitude and direction**
+![Sobel magnitude and direction image](sobel_magnitude_and_direction.png 'Sobel magnitude and direction image')
+
+**All Sobel masks**
+![All Sobel masks](all_sobel.png 'All Sobel masks')
 
 #### 3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
 
