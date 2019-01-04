@@ -43,7 +43,7 @@ Now, in order to use the **calibrateCamera** openCV function, we need to provide
 
 After aggregating all corners and object points, and feeding them to the calibrateCamera function, we get the camera matrix and distortion coefficients we can use in order to undistort an image. For example:
 
-![Undistort a chessboard image](undistort_chess.png 'Undistort chessboard image')
+![Undistort a chessboard image](undistorted_chess.png 'Undistorted chessboard image')
 
 ### Pipeline (single images)
 
