@@ -57,13 +57,13 @@ To demonstrate this step, I will describe how I apply the distortion correction 
 I used a combination of color transforms and the Sobel method in order to create a thresholded binary image. Let's go through the output of each Sobel transformation.
 
 **Sobel X**
-![Sobel X image](sobel_x_image.png 'Sobel X image')
+![Sobel X image](sobel_x.png 'Sobel X image')
 
 **Sobel Y**
-![Sobel Y image](sobel_y_image.png 'Sobel Y image')
+![Sobel Y image](sobel_y.png 'Sobel Y image')
 
 **Sobel XY**
-![Sobel XY image](sobel_xy_image.png 'Sobel XY image')
+![Sobel XY image](sobel_xy.png 'Sobel XY image')
 
 **Sobel magnitude**
 ![Sobel magnitude image](sobel_magnitude.png 'Sobel magnitude image')
