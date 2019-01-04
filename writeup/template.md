@@ -75,6 +75,8 @@ There are different Sobel operatos we can apply, so let's go through each one.
 
 As you can see, the Sobel operator can identify some lines in our image (like the dashed white line on the right), however, it's not able to identify the yellow line on the left side. That's because we need to transform an image into gray scale before feeding it to the Sobel operator. When we do this color space transformation, we lose a lot of information. So, in order to properly identify the lines in the given images, we need to use some additional transforms.
 
+Feel free to check the **Sobel** section in the notebook.ipynb file for more details.
+
 ### Color spaces
 
 #### [RGB](https://en.wikipedia.org/wiki/RGB_color_model)
@@ -121,6 +123,8 @@ We see good results with different color spaces. However, we think the **HSL** c
 
 Merging the white and yellow masks (2nd image) give us good results. However, we do a better job of detecting white and yellow lanes by using the saturation channel in the HSL color space (third image). Although, the HSL mask also detects the entire sky, but we can solve that problem by selecting a region of interest. Therefore, we are going to go for **HSL** for detecting white and yellow pixels using the **saturation channel**.
 
+Feel free to check the **Color Spaces** section in the notebook.ipynb file for more details.
+
 ### Combine Sobel operators and color transforms
 
 ![Combine Sobel operators and color transforms](sobel_and_color.png 'Combine Sobel operators and color transforms')
@@ -162,6 +166,8 @@ Finally, we can call the **getPerspectiveTransform** openCV function in order to
 For example, this is one example of the perspective transform applied:
 
 ![Perspective view](perspective.png 'Perspective view')
+
+Feel free to check the **Region of interest** and **Perspective transform** sections in the notebook.ipynb file for more details.
 
 #### 4. Describe how (and identify where in your code) you identified lane-line pixels and fit their positions with a polynomial?
 
