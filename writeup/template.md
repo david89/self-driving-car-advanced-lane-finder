@@ -25,15 +25,9 @@ The goals / steps of this project are the following:
 
 ---
 
-### Writeup / README
+# Camera Calibration
 
-#### 1. Provide a Writeup / README that includes all the rubric points and how you addressed each one.  You can submit your writeup as markdown or pdf.  [Here](https://github.com/udacity/CarND-Advanced-Lane-Lines/blob/master/writeup_template.md) is a template writeup for this project you can use as a guide and a starting point.  
-
-You're reading it!
-
-### Camera Calibration
-
-#### 1. Briefly state how you computed the camera matrix and distortion coefficients. Provide an example of a distortion corrected calibration image.
+## 1. Briefly state how you computed the camera matrix and distortion coefficients. Provide an example of a distortion corrected calibration image.
 
 In order to find the camera matrix and distortion coefficients we need a set of white and black chessboard pictures for calibration purposes (it's recommended to have at least 20). For each picture, we can use the **findChessboardCorners** openCV function in order to find the pixels that correspond to the corners of the chessboard.
 
@@ -45,40 +39,95 @@ After aggregating all corners and object points, and feeding them to the calibra
 
 ![Undistort a chessboard image](undistorted_chess.png 'Undistorted chessboard image')
 
-### Pipeline (single images)
+# Pipeline (single images)
 
-#### 1. Provide an example of a distortion-corrected image.
+## 1. Provide an example of a distortion-corrected image.
 
 To demonstrate this step, I will describe how I apply the distortion correction to one of the test images like this one:
 ![Undistorted image](undistorted_image.png 'Undistorted image')
 
-#### 2. Describe how (and identify where in your code) you used color transforms, gradients or other methods to create a thresholded binary image.  Provide an example of a binary image result.
+## 2. Describe how (and identify where in your code) you used color transforms, gradients or other methods to create a thresholded binary image.  Provide an example of a binary image result.
 
-I used a combination of color transforms and the Sobel method in order to create a thresholded binary image. Let's go through the output of each Sobel transformation.
+### Sobel method (gradients)
 
-**Sobel X**
+There are different Sobel operatos we can apply, so let's go through each one.
+
+**Sobel X**: gradient over the x axis.
 ![Sobel X image](sobel_x.png 'Sobel X image')
 
-**Sobel Y**
+**Sobel Y**: gradient over the y axis.
 ![Sobel Y image](sobel_y.png 'Sobel Y image')
 
-**Sobel XY**
+**Sobel XY**: combination of the Sobel X and Sobel Y operators.
 ![Sobel XY image](sobel_xy.png 'Sobel XY image')
 
-**Sobel magnitude**
+**Sobel magnitude**: represents how much the gradient is changing in the X and Y directions.
 ![Sobel magnitude image](sobel_magnitude.png 'Sobel magnitude image')
 
-**Sobel direction**
+**Sobel direction**: returns a rough estimate of what's the direction of the gradient at each point.
 ![Sobel direction image](sobel_direction.png 'Sobel direction image')
 
-**Sobel magnitude and direction**
+**Sobel magnitude and direction**: combination of the Sobel magnitude and Sobel direction operators.
 ![Sobel magnitude and direction image](sobel_magnitude_direction.png 'Sobel magnitude and direction image')
 
-**All Sobel masks**
+**All Sobel masks**: combination of Sobel XY and Sobel magnitude and direction.
 ![All Sobel masks](all_sobel.png 'All Sobel masks')
 
-#### 3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
+As you can see, the Sobel operator can identify some lines in our image (like the dashed white line on the right), however, it's not able to identify the yellow line on the left side. That's because we need to transform an image into gray scale before feeding it to the Sobel operator. When we do this color space transformation, we lose a lot of information. So, in order to properly identify the lines in the given images, we need to use some additional transforms.
 
+### Color spaces
+
+#### [RGB](https://en.wikipedia.org/wiki/RGB_color_model)
+
+This is the color space we usually read images in.
+
+#### [HSV](https://en.wikipedia.org/wiki/HSL_and_HSV)
+
+Is important to notice that during the RGB to HSV conversion process, some scaling happens ([more information](https://docs.opencv.org/2.4/modules/imgproc/doc/miscellaneous_transformations.html?#cvtcolor)). Therefore, the range of values we operate on are:
+* H ∈ [0, 180]
+* S ∈ [0, 255]
+* V ∈ [0, 255]
+
+If you are curious how to transform RGB values to HSV, we used [this color picker](https://alloyui.com/examples/color-picker/hsv) to find the corresponding HSV values for some colors like white or yellow.
+
+#### [HSL](https://en.wikipedia.org/wiki/HSL_and_HSV)
+
+Similarly to HSV, some scaling happens in the RGB to HSL conversion process. But another important detail is that opencv switches the order of saturation and lightness; so we are actually dealing with a HLS color space.
+
+The range of values we operate on are:
+* H ∈ [0, 180]
+* L ∈ [0, 255]
+* S ∈ [0, 255]
+
+Additionally, we used [this color picker](https://www.w3schools.com/colors/colors_hsl.asp) to find the HSL values for some colors like white or yellow.
+
+Now that we have briefly gone over the most common color spaces, let's discuss how to get the pixels we are interested at based on their colors.
+
+#### Detect yellow pixels
+
+![Detect yellow pixels](yellow.png 'Detect yellow pixels')
+
+We see good results after trying to identify the yellow color in the **HSV** color space.
+
+#### Detect white pixels
+
+![Detect white pixels](white.png 'Detect white pixels')
+
+We see good results with different color spaces. However, we think the **HSL** color space was easier to tune, since we only care about lightness.
+
+#### Combining white and yellow pixels 
+
+![Combine white and yellow pixels](white_and_yellow.png 'Combine white and yellow pixels')
+
+Merging the white and yellow masks (2nd image) give us good results. However, we do a better job of detecting white and yellow lanes by using the saturation channel in the HSL color space (third image). Although, the HSL mask also detects the entire sky, but we can solve that problem by selecting a region of interest. Therefore, we are going to go for **HSL** for detecting white and yellow pixels using the **saturation channel**.
+
+### Combine Sobel operators and color transforms
+
+![Combine Sobel operators and color transforms](sobel_and_color.png 'Combine Sobel operators and color transforms')
+
+After combining the Sobel operators and the color transforms we see that we have detected the pixels we mostly care about.
+
+#### 3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
 The code for my perspective transform includes a function called `warper()`, which appears in lines 1 through 8 in the file `example.py` (output_images/examples/example.py) (or, for example, in the 3rd code cell of the IPython notebook).  The `warper()` function takes as inputs an image (`img`), as well as source (`src`) and destination (`dst`) points.  I chose the hardcode the source and destination points in the following manner:
 
 ```python
