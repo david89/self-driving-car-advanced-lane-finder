@@ -169,11 +169,27 @@ For example, this is one example of the perspective transform applied:
 
 Feel free to check the **Region of interest** and **Perspective transform** sections in the notebook.ipynb file for more details.
 
-#### 4. Describe how (and identify where in your code) you identified lane-line pixels and fit their positions with a polynomial?
+## 4. Describe how (and identify where in your code) you identified lane-line pixels and fit their positions with a polynomial?
 
-Then I did some other stuff and fit my lane lines with a 2nd order polynomial kinda like this:
+We identified the left and right lines using different steps we are going to discuss right now.
 
-![alt text][image5]
+### Histograms
+
+First of all, we calculate a histogram of the bottom section of a bird's eye view image in order to calculate the "hot" x coordinates, i.e., the x coordinates with more activated pixels.
+
+For example, if we calculate the histogram on the bottom half of the perspective image we showed in the previous section, we get something like this:
+
+![Histogram](histogram.png 'Histogram')
+
+As you can see in the histogram, the pixels 189 and 1156 are the most relevant pixels in our case (one for the left line and the other one for the right line).
+
+### Sliding windows
+
+Now that we have some base x coordinates, we can perform a sliding window search. We create `n` windows of a fixed size. For each line, we create a window of a fixed size centered at the x coordinate calculated in the histogram section. Then, for subsequent iterations, we update the x coordinate of each window based on the mean of activated x coordinates in the previous iteration.
+
+![Sliding window](sliding_window.png 'Sliding window')
+
+Feel free to check the **Find lane pixels** section in the notebook.ipynb file for more details.
 
 #### 5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
 
