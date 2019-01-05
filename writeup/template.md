@@ -247,9 +247,27 @@ Feel free to check the **Project our curvatures into the original image** sectio
 
 # Pipeline (video)
 
-## 1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (wobbly lines are ok but no catastrophic failures that would cause the car to drive off the road!).
+In order to improve the accuracy of the lane detection pipeline in a video, we had to introduce two more concepts.
 
-Here's a [link to my video result](../output_videos/output_project_video.mp4)
+## Search from prior
+
+If we have a high confidence measurement from a previous frame, we could search within a certain margin of the fitted polynomial, instead of restarting the whole sliding window search.
+
+For example:
+
+![From prior](from_prior.png 'From prior')
+
+Feel free to check the **Search from prior** section in the notebook.ipynb file for more details.
+
+## Keeping track of previous frames
+
+Analyzing frame by frame may result in lines jumping a bit from frame to frame, leading to innaccurate results. In order to fix that problem, we decided to keep the measurements of the last n iterations, and use an averaged fitted polynomial.
+
+Feel free to check the **Keeping track of previous frames** section in the notebook.ipynb file for more details.
+
+## Final result
+
+After implementing all the necessary pieces and adding the search from prior and keeping track of previous frames, we ended up with the [following result](../output_videos/output_project_video.mp4)
 
 ---
 
