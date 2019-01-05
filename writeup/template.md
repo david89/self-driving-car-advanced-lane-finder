@@ -191,6 +191,14 @@ Now that we have some base x coordinates, we can perform a sliding window search
 
 Feel free to check the **Find lane pixels** section in the notebook.ipynb file for more details.
 
+### Fit polynomial
+
+Now that we have the set of pixels that belong to a certain line, let's fit a polynomial of second degree that represents such line. For that, we can use the **polyfit** numpy function.
+
+The yellow line in the following image represents the fitted polynomial for the left and right lines.
+
+![Fitted polynomial](fitted.png 'Fitted polynomial')
+
 #### 5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
 
 I did this in lines # through # in my code in `my_other_file.py`
