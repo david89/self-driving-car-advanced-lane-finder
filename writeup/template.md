@@ -273,6 +273,12 @@ After implementing all the necessary pieces and adding the search from prior and
 
 # Discussion
 
-## 1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
+## Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
-Here I'll talk about the approach I took, what techniques I used, what worked and why, where the pipeline might fail and how I might improve it if I were going to pursue this project further.  
+There are several improvements that can be applied.
+
+1. The pipeline is slow. There are several operations we are calculating over and over again in several places.
+
+2. Sometimes the line detection fail when noise is introduced. For example, in the challenge video, there are some changes in the color of the pavement that confuse our pipeline. In order to improve this situation, we need to measure how confident we are in the measurements we are taking. For example, if we have n high confidence measurements for the last several frames, and we get an outlier where the curvature of the left line doesn't match the curvature of the right line, or the x coordinates have changed drastically, we can just discard that frame and report the weighted measurements from the previous frames.
+
+3. The line detection fails when we take sharp turns. For example, in the harder challenge video, there are some frames where one of the lines dissappear. We can keep track of the progression of the x coordinates for each line, if at some point we are getting too close to the borders and the line dissappear in the subsequent frames, we should stop looking for that frame and assume that's out of the picture and has a similar curvature to the other line we have knowledge of.
