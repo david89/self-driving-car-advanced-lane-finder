@@ -199,28 +199,62 @@ The yellow line in the following image represents the fitted polynomial for the 
 
 ![Fitted polynomial](fitted.png 'Fitted polynomial')
 
-#### 5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
+## 5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
 
-I did this in lines # through # in my code in `my_other_file.py`
+The second degree polynomial calculated in the previous step can be represented as:
 
-#### 6. Provide an example image of your result plotted back down onto the road such that the lane area is identified clearly.
+f(y) = A * y <sup>2</sup> + B * y + C
 
-I implemented this step in lines # through # in my code in `yet_another_file.py` in the function `map_lane()`.  Here is an example of my result on a test image:
+In order to calculate the radius of the curvature of the lane, we need to compute the following:
 
-![alt text][image6]
+R<sub>curve</sub>(y) = (1 + f'(y)<sup>2</sup>)<sup>3/2</sup>) / |f''(y)|
+
+Where
+
+f'(y) = 2 * A * y + B
+
+f''(y) = 2 * A
+
+Where all reduces to:
+
+R<sub>curve</sub>(y) = (1 + (2 * A * y)<sup>2</sup>)<sup>3/2</sup>) / |2 * A|
+
+In our particular case, we can use y = image.shape[0] in order to measure the curvature at the pixel closest to the vehicle. However, it's worth mentioning, that the measurements we are getting are in pixels, and we need to transform that into real word units like meters. In order to accomplish that, we are going to use measurements of a lane in real life, and the size of our warped picture, which are:
+
+**y_meters_per_pixel = 30 / 720**
+
+**x_meters_per_pixel = 3.7 / 700**
+
+For example, if we calculate the curvature of the fitted polynomials mentioned in the last step, we get the following measurements:
+
+* Left curvature is 780.68m
+* Right curvature is 1481.69m
+* The car is 0.17m off center
+
+Feel free to check the **Measure curvature** section in the notebook.ipynb file for more details.
+
+## 6. Provide an example image of your result plotted back down onto the road such that the lane area is identified clearly.
+
+Finally, in order to show the area that corresponds to the current lane, we need to project the polynomials fitted in the previous step.
+
+For example:
+
+![Curvature projection](projected.png 'Curvature projection')
+
+Feel free to check the **Project our curvatures into the original image** section in the notebook.ipynb file for more details.
 
 ---
 
-### Pipeline (video)
+# Pipeline (video)
 
-#### 1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (wobbly lines are ok but no catastrophic failures that would cause the car to drive off the road!).
+## 1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (wobbly lines are ok but no catastrophic failures that would cause the car to drive off the road!).
 
-Here's a [link to my video result](./project_video.mp4)
+Here's a [link to my video result](../output_videos/project_video.mp4)
 
 ---
 
-### Discussion
+# Discussion
 
-#### 1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
+## 1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
 Here I'll talk about the approach I took, what techniques I used, what worked and why, where the pipeline might fail and how I might improve it if I were going to pursue this project further.  
